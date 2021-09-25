@@ -18,10 +18,10 @@ public class MergeSort {
         int i = 0;
         while (l <= mid && r <= end){
             if (nums[l] < nums[r]){
-                temp[++i] = nums[l];
+                temp[i++] = nums[l];
                 l++;
             } else {
-                temp[++i] = nums[r];
+                temp[i++] = nums[r];
                 r++;
             }
         }
@@ -32,7 +32,7 @@ public class MergeSort {
             b = end;
         }
         for (int j = a; j <= b ; j++) {
-            temp[++i] = nums[j];
+            temp[i++] = nums[j];
         }
         // 将temp数组的内容拷贝回原数组
         i = 0;
