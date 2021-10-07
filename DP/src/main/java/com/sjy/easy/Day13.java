@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Day12 {
+public class Day13 {
     public static void main(String[] args) {
-        Day12 d = new Day12();
+        Day13 d = new Day13();
         List<List<Integer>> list = new ArrayList<>();
     }
 
