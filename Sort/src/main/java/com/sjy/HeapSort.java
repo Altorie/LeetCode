@@ -35,10 +35,11 @@ public class HeapSort {
         int rightChild = 2*i + 2;
         // 记录最大值的位置
         int maxIndex = i;
-        // 如果存在左节点且左节点值大于父节点，更新maxIndex
+        // 如果存在左节点且左节点值大于当前最大值，更新最大值的索引maxIndex
         if (leftChild < len && nums[leftChild] > nums[maxIndex]){
             maxIndex = leftChild;
         }
+        // 如果存在左节点且左节点值大于当前最大值，更新最大值的索引maxIndex
         if (rightChild < len && nums[rightChild] > nums[maxIndex]){
             maxIndex = rightChild;
         }
