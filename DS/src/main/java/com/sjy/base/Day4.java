@@ -1,4 +1,4 @@
-package com.sjy;
+package com.sjy.base;
 
 public class Day4 {
     public static void main(String[] args) {

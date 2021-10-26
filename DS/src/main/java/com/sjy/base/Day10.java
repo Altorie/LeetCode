@@ -1,8 +1,4 @@
-package com.sjy;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package com.sjy.base;
 
 public class Day10 {
     /**

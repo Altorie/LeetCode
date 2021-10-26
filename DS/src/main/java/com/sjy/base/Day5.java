@@ -1,6 +1,5 @@
-package com.sjy;
+package com.sjy.base;
 
-import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.HashMap;
 import java.util.Map;
 
