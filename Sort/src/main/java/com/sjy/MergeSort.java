@@ -1,5 +1,8 @@
 package com.sjy;
 
+/**
+ * 归并排序本质上是对二叉树的一个后序遍历
+ */
 public class MergeSort {
     public static void main(String[] args) {
 

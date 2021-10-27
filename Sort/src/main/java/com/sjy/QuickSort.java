@@ -1,5 +1,8 @@
 package com.sjy;
 
+/**
+ * 快速排序本质上是一个二叉树的前序遍历
+ */
 public class QuickSort {
     public static void main(String[] args) {
         QuickSort sort = new QuickSort();
