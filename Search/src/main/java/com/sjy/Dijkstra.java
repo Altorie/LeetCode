@@ -43,10 +43,8 @@ public class Dijkstra {
         int[] preNode = new int[v]; // 最短路径上的前驱节点
         preNode[s] = -1; // 其实节点 s 没有前驱节点
 
-        boolean[] flag = new boolean[v]; // 记录节点访问状态
         Queue<Integer> queue =new LinkedList<>();
         queue.offer(s);
-        flag[s] = true;
         // 广度优先遍历其它节点
         while (!queue.isEmpty()){
             int node = queue.poll();
@@ -57,12 +55,9 @@ public class Dijkstra {
                     distances[nbr] = distances[node]+e.weight;
                     // nbr 的前驱节点是 node
                     preNode[nbr] = node;
-                }
-                if (!flag[nbr]){
+                    // 因为 nbr的距离改变了，所以它的邻居的距离也要重新计算。将 nbr 加入队列
                     queue.offer(nbr);
-                    flag[nbr] = true;
                 }
-
             }
         }
     }
