@@ -2,6 +2,7 @@ package com.sjy.study;
 
 import sun.awt.image.ImageWatched;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -95,6 +96,30 @@ public class Traversal {
             } else { // 如果是标记节点，处理下一个栈顶元素
                 node = stack.pop();
                 sb.append(node.val).append("->");
+            }
+        }
+        System.out.println(sb);
+    }
+
+    /**
+     * 层序遍历
+     * @param root
+     */
+    public void levelOrder(TreeNode root){
+        if (root==null)return;
+        StringBuffer sb = new StringBuffer();
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.addLast(root);
+        while (!queue.isEmpty()){
+            int size = queue.size(); // 通过 size来区分层与层
+            // 只遍历当前层的节点
+            for (int i = 0; i < size; i++) {
+                TreeNode top = queue.getFirst();
+                // 对节点进行操作
+                sb.append(top.val);
+                // 将其子节点加入队列
+                if (top.left!=null)queue.addLast(top.left);
+                if (top.right!=null)queue.addLast(top.right);
             }
         }
         System.out.println(sb);
