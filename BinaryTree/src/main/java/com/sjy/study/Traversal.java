@@ -114,7 +114,7 @@ public class Traversal {
             int size = queue.size(); // 通过 size来区分层与层
             // 只遍历当前层的节点
             for (int i = 0; i < size; i++) {
-                TreeNode top = queue.getFirst();
+                TreeNode top = queue.pop();
                 // 对节点进行操作
                 sb.append(top.val);
                 // 将其子节点加入队列
