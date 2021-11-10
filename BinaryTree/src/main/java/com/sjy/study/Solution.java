@@ -31,7 +31,12 @@ import java.util.*;
  **/
 public class Solution {
     public static void main(String[] args) {
-
+        Scanner in = new Scanner(System.in);
+        String str1 = in.nextLine();
+        String str2 = in.nextLine();
+        String[] s = str1.split(" ");
+        List<Integer> odds = new ArrayList<>(); // 存储奇数的可取数目
+        List<Integer> evens = new ArrayList<>(); // 存储偶数的可取数目
     }
 
     /**
@@ -129,5 +134,72 @@ public class Solution {
             }
         }
         return root;
+    }
+
+    /**
+     * 101. 对称二叉树
+     * 给定一个二叉树，检查它是否是镜像对称的。
+     * @param root
+     * @return
+     */
+    public boolean isSymmetric(TreeNode root) {
+        /**
+         * 1 利用递归解决
+         */
+//        if (root==null)return true;
+//        return traverse(root.left, root.right);
+        /**
+         * 2 利用迭代解决
+         *
+         */
+        if (root == null)return true;
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.addLast(root.left);
+        queue.addLast(root.right);
+        while (!queue.isEmpty()){
+            TreeNode leftNode = queue.removeFirst();
+            TreeNode rightNode = queue.removeFirst();
+            if (leftNode==null && rightNode == null){
+                continue;
+            }
+            if (leftNode!=null && rightNode!=null && leftNode.val == rightNode.val){
+                queue.addLast(leftNode.left);
+                queue.addLast(rightNode.right);
+
+                queue.addLast(leftNode.right);
+                queue.addLast(rightNode.left);
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean traverse(TreeNode left, TreeNode right){
+        if (left == null && right == null){
+            return true;
+        } else if (left!=null && right!=null){
+            return left.val == right.val && traverse(left.right, right.left) && traverse(left.left, right.right);
+        }
+        return false;
+    }
+
+    /**
+     * 111. 二叉树的最小深度
+     * 给定一个二叉树，找出其最小深度。
+     * 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+     *
+     * 这道题和求二叉树的最大深度有一点区别：如果某一个子节点为 null，那在求最小值时这个子节点的 0 不能考虑
+     * @param root
+     * @return
+     */
+    public int minDepth(TreeNode root) {
+        if (root == null)return 0;
+        if (root.left == null && root.right == null){
+            return 1;
+        }
+        int min = Integer.MAX_VALUE;
+        if (root.left!=null)min = Math.min(min, minDepth(root.left));
+        if (root.right!=null)min = Math.min(min, minDepth(root.right));
+        return min+1;
     }
 }
