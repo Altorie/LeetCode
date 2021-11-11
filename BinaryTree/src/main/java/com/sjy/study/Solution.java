@@ -202,4 +202,65 @@ public class Solution {
         if (root.right!=null)min = Math.min(min, minDepth(root.right));
         return min+1;
     }
+
+    /**
+     * 222. 完全二叉树的节点个数
+     * 给你一棵 完全二叉树 的根节点 root ，求出该树的节点个数。
+     * @param root
+     * @return
+     */
+    public int countNodes(TreeNode root) {
+        if (root==null){
+            return 0;
+        }
+        int leftDepth = 0, rightDepth = 0;
+        TreeNode l = root.left;
+        while (l!=null){
+            leftDepth++;
+            l = l.left;
+        }
+        TreeNode r = root.right;
+        while (r!=null){
+            rightDepth++;
+            r =r.right;
+        }
+        if (leftDepth == rightDepth){ // 这棵树是满二叉树
+            return (2 << leftDepth)-1;
+        }
+        return countNodes(root.left) + countNodes(root.right) + 1;
+    }
+
+    /**
+     * 257. 二叉树的所有路径
+     * 给你一个二叉树的根节点 root ，按 任意顺序 ，返回所有从根节点到叶子节点的路径。
+     * 叶子节点 是指没有子节点的节点。
+     * @param root
+     * @return
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<Integer> path = new ArrayList<>();
+        List<String> result = new ArrayList<>();
+        if (root!=null) backtrack(root, path, result);
+        return result;
+    }
+    private void backtrack(TreeNode node, List<Integer> path, List<String> result){
+        path.add(node.val);
+        if (node.left == null && node.right == null){ // 遍历到叶子节点
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < path.size()-1; i++) {
+                sb.append(path.get(i)).append("->");
+            }
+            sb.append(path.get(path.size()-1));
+            result.add(sb.toString());
+        }else {
+            if (node.left!=null){
+                backtrack(node.left, path, result);
+                path.remove(path.size()-1);
+            }
+            if (node.right!=null){
+                backtrack(node.right, path, result);
+                path.remove(path.size()-1);
+            }
+        }
+    }
 }
