@@ -263,4 +263,115 @@ public class Solution {
             }
         }
     }
+
+    /**
+     * 404. 左叶子之和
+     * 计算给定二叉树的所有左叶子之和。
+     *
+     * 判断一个节点是否是左叶子，必须都通其父亲判断
+     * @param root
+     * @return
+     */
+    public int sumOfLeftLeaves(TreeNode root) {
+        /**
+         * 1. 使用递归
+         */
+        if (root == null){
+            return 0;
+        }
+        if (root.left!=null && root.left.left==null && root.left.right==null){
+            return root.left.val + sumOfLeftLeaves(root.right);
+        }
+        return sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
+    }
+
+    /**
+     * 513. 找树左下角的值
+     * 给定一个二叉树的 根节点 root，请找出该二叉树的 最底层 最左边 节点的值。
+     * 假设二叉树中至少有一个节点。
+     * @param root
+     * @return
+     */
+    public int findBottomLeftValue(TreeNode root) {
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.addLast(root);
+        int result = 0;
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            result = queue.getFirst().val;
+            for (int i = 0; i < size; i++) {
+                TreeNode top = queue.removeFirst();
+                if (top.left!=null) queue.addLast(top.left);
+                if (top.right!=null) queue.addLast(top.right);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 112. 路径总和
+     * 给你二叉树的根节点 root 和一个表示目标和的整数 targetSum
+     * 判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        /**
+         * 1. 递归
+         * 只要 左子树或右子树存在和为 targetSum - root.val 的路径
+         */
+        if (root == null){
+            return false;
+        }
+        if (root.left == null && root.right == null && root.val == targetSum){
+            return true;
+        }
+        boolean ans = false;
+        if (root.left!=null){
+            ans |= hasPathSum(root.left, targetSum-root.val);
+        }
+        if (root.right!=null){
+            ans |= hasPathSum(root.right, targetSum-root.val);
+        }
+        return ans;
+        /**
+         * 2.遍历
+         */
+    }
+
+    /**
+     * 113. 路径总和 II
+     * 给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
+     * 叶子节点 是指没有子节点的节点。
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if (root == null){
+            return ans;
+        }
+        List<Integer> path = new ArrayList<>();
+        path.add(root.val);
+        pathSum_backtrack(root, targetSum, path, ans);
+        return ans;
+    }
+    private void pathSum_backtrack(TreeNode root, int targetSum, List<Integer> path, List<List<Integer>> ans){
+        if (root.left==null && root.right == null && root.val == targetSum){
+            List<Integer> list = new ArrayList<>(path);
+            ans.add(list);
+        }
+        if (root.left!=null){
+            path.add(root.left.val);
+            pathSum_backtrack(root.left, targetSum-root.val, path, ans);
+            path.remove(path.size()-1);
+        }
+        if (root.right!=null){
+            path.add(root.right.val);
+            pathSum_backtrack(root.right, targetSum-root.val, path, ans);
+            path.remove(path.size()-1);
+        }
+    }
 }
