@@ -374,4 +374,63 @@ public class Solution {
             path.remove(path.size()-1);
         }
     }
+
+
+    /**
+     * 617. 合并二叉树
+     * 使用递归
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public TreeNode mergeTrees1(TreeNode root1, TreeNode root2) {
+        // 如果 root1 为空，直接返回 root2。同时，即使 root2还有子节点，对应的 root1仍为 null
+        // 直接返回的还是 root2 的子节点本身
+        // 由于 root2 和 其子节点本来就是串联的，因此不必再往下遍历
+        if (root1==null){
+            return root2;
+        }
+        if (root2 == null){ // 同理
+            return root1;
+        }
+        root1.val += root2.val;
+        root1.left = mergeTrees1(root1.left, root2.left);
+        root1.right = mergeTrees1(root1.right, root2.right);
+        return root1;
+    }
+
+    /**
+     * 617. 合并二叉树
+     * 使用迭代
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public TreeNode mergeTrees2(TreeNode root1, TreeNode root2) {
+        if (root1 == null) return root2;
+        if (root2 == null) return root1;
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.addLast(root1);
+        queue.addLast(root2);
+        while (!queue.isEmpty()){
+            TreeNode node1 = queue.removeFirst();
+            TreeNode node2 = queue.removeFirst();
+            node1.val+=node2.val;
+            if (node1.left!=null && node2.left !=null){
+                queue.addLast(node1.left);
+                queue.addLast(node2.left);
+            }
+            if (node1.right!=null && node2.right!=null){
+                queue.addLast(node1.right);
+                queue.addLast(node2.right);
+            }
+            if (node1.left == null){
+                node1.left = node2.left;
+            }
+            if (node1.right==null){
+                node1.right = node2.right;
+            }
+        }
+        return root1;
+    }
 }
