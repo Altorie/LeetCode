@@ -30,13 +30,20 @@ import java.util.*;
  * @DESCRIPTION 
  **/
 public class Solution {
+    private TreeNode p;
+    private int min = Integer.MAX_VALUE;
+
+    int maxCount = 1; // 目前最高的频率
+    int count = 0; // 当前节点的频率
+
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        String str1 = in.nextLine();
-        String str2 = in.nextLine();
-        String[] s = str1.split(" ");
-        List<Integer> odds = new ArrayList<>(); // 存储奇数的可取数目
-        List<Integer> evens = new ArrayList<>(); // 存储偶数的可取数目
+        Solution s = new Solution();
+        TreeNode node1 = new TreeNode(1);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node3 = new TreeNode(2);
+        node1.right = node2;
+        node2.left = node3;
+        s.findMode(node1);
     }
 
     /**
@@ -432,5 +439,129 @@ public class Solution {
             }
         }
         return root1;
+    }
+
+    /**
+     * 98. 验证二叉搜索树
+     *
+     * 中序遍历应该是一个递增的序列
+     * @param root
+     * @return
+     */
+    public boolean isValidBST(TreeNode root) {
+        /**
+         * 递归中序遍历
+         */
+//        if (root == null) return true;
+//        boolean left = isValidBST(root.left);
+//        // p 是前一个遍历的节点
+//        // 如果前一个节点的值 大于等于 本节点，那么肯定不是二叉搜索树
+//        if (p!=null && p.val >= root.val){
+//            return false;
+//        }
+//        // 更新 p 指针
+//        p = root;
+//        boolean right = isValidBST(root.right);
+//        return left&& right;
+        /**
+         * 迭代中序遍历
+         */
+        Deque<TreeNode> stack = new LinkedList<>();
+        // 记录前一个节点
+        TreeNode pre = null;
+        while (root!=null || !stack.isEmpty()){
+            if (root!=null){
+                stack.push(root);
+                root = root.left;
+            } else {
+                root = stack.pop();
+                if (pre!=null && pre.val >= root.val)return false;
+                pre = root;
+                root = root.right;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 530. 二叉搜索树的最小绝对差
+     * 最小绝对差只会出现在中序遍历序列的相邻两个元素之间
+     * @param root
+     * @return
+     */
+    public int getMinimumDifference(TreeNode root) {
+        /**
+         * 递归式中序遍历
+         */
+        getMinimumDifference_travesal(root);
+        return min;
+    }
+    private void getMinimumDifference_travesal(TreeNode cur){
+        if (cur!=null){
+            getMinimumDifference_travesal(cur.left);
+            if (p!=null){
+                min = Integer.min(cur.val - p.val, min);
+            }
+            p = cur;
+            getMinimumDifference_travesal(cur.right);
+        }
+    }
+
+    /**
+     * 501. 二叉搜索树中的众数
+     * @param root
+     * @return
+     */
+    public int[] findMode(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        findMode_travesal(root, result);
+        int[] ans = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            ans[i] = result.get(i);
+        }
+        return ans;
+    }
+    private void findMode_travesal(TreeNode node,List<Integer> result){
+        if (node == null) return;
+        findMode_travesal(node.left, result);
+        if (p == null){
+            count=1;
+        } else if (p.val == node.val){
+            count ++;
+        } else {
+            count = 1;
+        }
+        if (count > maxCount){
+            maxCount = count;
+            result.clear();
+            result.add(node.val);
+        } else if (count == maxCount){
+            result.add(node.val);
+        }
+        p = node;
+        findMode_travesal(node.right, result);
+    }
+
+    /**
+     * 235. 二叉搜索树的最近公共祖先
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (p.val > q.val){
+            return lowestCommonAncestor(root, q, p);
+        }
+        while (true){
+            if (root.val == p.val || root.val == q.val || ( root.val > p.val && root.val < q.val) ){
+                return root;
+            }
+            if (root.val < p.val){
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+        }
     }
 }
