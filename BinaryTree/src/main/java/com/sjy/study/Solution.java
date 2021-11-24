@@ -564,4 +564,107 @@ public class Solution {
             }
         }
     }
+
+    /**
+     * 删除二叉搜索树中的节点
+     * @param root
+     * @param key
+     * @return
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+        TreeNode p = root;
+        TreeNode father = null; // 父节点
+        while (p!=null){
+            if (key < p.val){
+                father = p;
+                p = p.left;
+            } else if (key > p.val){
+                father = p;
+                p = p.right;
+            } else { // 找到目标节点
+                if (p.left!=null && p.right!=null){ // 目标节点的左右孩子都存在
+                    // 找到其右子树最小的节点
+                    TreeNode pp = p.right;
+                    TreeNode ppf = p;
+                    while (pp.left!=null){
+                        ppf = pp;
+                        pp = pp.left;
+                    }
+                    // 交换节点 p 和 节点 pp 的值
+                    int temp = p.val;
+                    p.val = pp.val;
+                    pp.val = temp;
+                    // 此时要删除的节点就变成了 pp
+                    p = pp;
+                    father = ppf;
+                }
+                // 目标节点只有一个或没有孩子的情况
+                TreeNode child = null;
+                if (p.left!=null) child = p.left;
+                if (p.right!=null) child = p.right;
+                if (father == null) return child;
+                if (p == father.left) father.left = child;
+                if (p == father.right) father.right = child;
+                break;
+            }
+        }
+        return root;
+    }
+
+    /**
+     * 669. 修剪二叉搜索树
+     * @param root
+     * @param low
+     * @param high
+     * @return
+     */
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        /**
+         * 1.递归
+         */
+//        if (root == null) return null;
+//        // 如果 root 比 high大，那么结果与 左子树的修剪结果 是相同的
+//        if (root.val > high){
+//            return trimBST(root.left, low, high);
+//        }
+//        // 如果 root 比 low 小，那么结果与 右子树的修剪结果 是相同的
+//        if (root.val < low){
+//            return trimBST(root.right, low, high);
+//        }
+//        // 左子树的修剪结果 加上 右子树的修剪结果
+//        root.left = trimBST(root.left, low, high);
+//        root.right = trimBST(root.right, low, high);
+//        return root;
+
+        /**
+         * 2.迭代
+         *  先把 root 节点移动到区间内
+         *  修剪 root 的左子树
+         *  修剪 root 的右子树
+         */
+        while (root!=null && (root.val < low || root.val > high)){
+            if (root.val < low){
+                root = root.right;
+            } else {
+                root = root.left;
+            }
+        }
+        // 修剪左子树
+        TreeNode l = root;
+        while (l!=null){
+            while (l.left!=null && l.left.val < low){
+                l.left = l.left.right;
+            }
+            l = l.left;
+        }
+        // 修剪右子树
+        TreeNode r = root;
+        while (r!=null){
+            while (r.right!=null && r.right.val > high){
+                r.right = r.right.left;
+            }
+            r = r.right;
+        }
+        return root;
+    }
 }
