@@ -41,15 +41,15 @@ public class LinearSort {
         int[] result = new int[nums.length];
         /**
          * 反向遍历原数组。(反向遍历的目的是为了是排序稳定)
-         *      对遍历到的每个元素值value，查找a[value]，代表此时 <= value的元素个数为 a[value]个。
-         *      那么，value在有序数组中的索引为 a[value]-1.
-         *      对 a[value]执行减 1 操作。确保下一个值为 value的元素在有序数组中的位置仍可用 a[value]-1 表示
+         *      对遍历到的每个元素值value，查找a[value-min]，代表此时 <= value的元素个数为 a[value-min]个。
+         *      那么，value在有序数组中的索引为 a[value-min]-1.
+         *      对 a[value]执行减 1 操作。确保下一个值为 value的元素在有序数组中的位置仍可用 a[value-min]-1 表示
          */
         for (int i = nums.length - 1; i >= 0; i++) {
             int value = nums[i];
-            int index = a[value]-1;
+            int index = a[value-min]-1;
             result[index] = value;
-            a[value] -= 1;
+            a[value-min] -= 1;
         }
         return result;
     }
