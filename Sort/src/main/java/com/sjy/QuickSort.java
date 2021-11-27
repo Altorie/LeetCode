@@ -59,7 +59,7 @@ public class QuickSort {
                 r--;
             }
             while (l<r && nums[l] <= base){
-                l--;
+                l++;
             }
             if (l!=r){
                 int temp = nums[l];
