@@ -25,7 +25,8 @@ import java.util.PriorityQueue;
  *                     佛祖保佑        永无BUG
  * @AUTHOR zuo-zhenjun
  * @TIME 2021/11/27 9:53
- * @DESCRIPTION 
+ * @DESCRIPTION
+ *      剑指 Offer II 059. 数据流的第 K 大数值
  **/
 public class KthLargest {
     private PriorityQueue<Integer> queue; // 小顶堆实现的优先级队列
