@@ -84,7 +84,47 @@ public class Solution4 {
      * @return
      */
     public List<List<String>> solveNQueens(int n) {
+        List<List<String>> ans = new ArrayList<>();
+        char[][] chessboard = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(chessboard[i], '.');
+        }
+        solveNQueens_backtrack(n, 0, chessboard, ans);
+        return ans;
+    }
+    private void solveNQueens_backtrack(int n, int row, char[][] chessboard, List<List<String>> ans){
+        if (row == n){
+            List<String> list = new ArrayList<>();
+            for (char[] chars : chessboard){
+                list.add(new String(chars));
+            }
+            ans.add(list);
+            return;
+        }
+        // 在第 row 行的 0 ~ n-1 列挑选一个合法位置放皇后
+        for (int col = 0; col < n; col++){
+            if (isValid(n, row, col, chessboard)){ // 这个位置能放皇后
+                chessboard[row][col] = 'Q';
+                solveNQueens_backtrack(n, row+1, chessboard, ans);
+                chessboard[row][col] = '.';
+            }
+        }
 
+    }
+    private boolean isValid(int n, int row, int col, char[][] chessboard){ // 在 (row, col) 放置皇后是否合法
+        // col 这一列是否冲突
+        for (int i = 0; i < row; i++) {
+            if (chessboard[i][col] == 'Q')return false;
+        }
+        // 检查左对角线
+        for (int i = row-1, j= col-1; i >= 0 && j >= 0 ; i--, j--) {
+            if (chessboard[i][j] == 'Q')return false;
+        }
+        // 检查右对角线
+        for (int i = row-1, j = col+1; i >= 0 && j < n; i--, j++){
+            if (chessboard[i][j] == 'Q')return false;
+        }
+        return true;
     }
 
 }
