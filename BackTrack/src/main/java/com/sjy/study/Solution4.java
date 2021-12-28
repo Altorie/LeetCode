@@ -127,4 +127,50 @@ public class Solution4 {
         return true;
     }
 
+    /**
+     * 37. 解数独
+     * @param board
+     */
+    public void solveSudoku(char[][] board) {
+        solveSudoku_backtrack(0, 0, board);
+    }
+    private boolean solveSudoku_backtrack(int m, int n, char[][] board){
+        if (m == board.length){
+            return true;
+        }
+        int nextM = n==8? m+1 : m;
+        int nextN = n==8? 0 : n+1;
+        if (board[m][n]=='.'){ // 需要填
+            for (char c = '1'; c <= '9'; c++){
+                if (isValid(m, n, c, board)){
+                    board[m][n] = c;
+                    if (solveSudoku_backtrack(nextM, nextN, board))return true;
+                    board[m][n] = '.';
+                }
+            }
+        } else {
+            if (solveSudoku_backtrack(nextM, nextN, board))return true;
+        }
+        return false;
+    }
+    private boolean isValid(int m, int n, char c, char[][] board){
+        // 检查行
+        for (int i = 0; i < 9; i++) {
+            if (c == board[m][i])return false;
+        }
+        // 检查列
+        for (int i = 0; i < 9; i++) {
+            if (c == board[i][n])return false;
+        }
+        // 检查 3*3 子矩阵
+        int startM = m/3*3;
+        int startN = n/3*3;
+        for (int i = startM; i < startM+3; i++) {
+            for (int j = startN; j < startN+3; j++) {
+                if (c == board[i][j])return false;
+            }
+        }
+        return true;
+    }
+
 }
